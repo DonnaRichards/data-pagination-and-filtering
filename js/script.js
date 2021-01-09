@@ -63,13 +63,11 @@ function addPagination( studentList ) {
    const ul = document.querySelector("ul.link-list");
    ul.innerHTML = "";
 
-   const numPages = () => {
-      const remainder = studentList.length % ITEMSPERPAGE;
-      if ( remainder ) {
-         return Math.floor( studentList.length / ITEMSPERPAGE ) + 1;
-      } else {
-         return studentList.length / ITEMSPERPAGE;
-      }
+   const remainder = studentList.length % ITEMSPERPAGE;
+   if ( remainder ) {
+      numPages = Math.floor( studentList.length / ITEMSPERPAGE ) + 1;
+   } else {
+      numPages = studentList.length / ITEMSPERPAGE;
    }
 
    let pageListHtml = '';
@@ -104,6 +102,9 @@ function addPagination( studentList ) {
    });
 }
 
+function searchForName() {
+   console.log('search function invoked');
+}
 
 // Main program
 
