@@ -63,6 +63,10 @@ function addPagination( studentList ) {
    const ul = document.querySelector("ul.link-list");
    ul.innerHTML = "";
 
+   // calculation of number of pages 
+   // if total number of student records exact multiple number of records to be shown per page, can simply divide
+   // but not exact multiple, obtain integer portion of division result (by Math.floor operation to round down)
+   // then add 1 to account for the extra records.
    const remainder = studentList.length % ITEMSPERPAGE;
    if ( remainder ) {
       numPages = Math.floor( studentList.length / ITEMSPERPAGE ) + 1;
@@ -101,9 +105,61 @@ function addPagination( studentList ) {
       }
    });
 }
-
+/**
+ * `searchForName` function
+ * "master" function for control of the search functionality
+ * user can either start entering text in search input field or hit search button
+ * and search results will be displayed or a message if no results found
+ * 
+ * The student list is not passed through to this function from the global code (unlike other functions)
+ * as this function is always performing the search on the full set of student records.  So uses the global
+ * variable
+ */
 function searchForName() {
-   console.log('search function invoked');
+
+   const searchInput = document.getElementById("search");
+   const searchButton = searchInput.nextElementSibling;
+   /**
+    * `displayNoResults` function
+    * Display message on page if user search returns no results
+    * Removes all html elements from both ul tags other than the message text
+    */
+   function displayNoResults() {
+      const ulStudents = document.querySelector("ul.student-list");
+      ulStudents.innerHTML = "<h2>No results found</h2>";
+      const ulPages = document.querySelector("ul.link-list");
+      ulPages.innerHTML = "";
+   }
+   /**
+    * `doSearch` function
+    * this function is called when either of the search related events are detected (i.e. a change
+    * in value of the input field or button clicked)
+    * performs the actual search and displays results
+    */
+   function doSearch() {
+      searchText = searchInput.value;
+      searchResults = [];
+      // loop through all student records finding those where the name (first + last) contains the search string
+      // (both compared as lowercase so search is case insensitive)
+      // have deliberately not coded for an empty search string as in this case all records are returned which
+      // is as it should be.
+      for (let i = 0; i < data.length; i++) {
+         const fullName = data[i].name.first.toLowerCase() + data[i].name.last.toLowerCase();
+         if ( fullName.includes(searchText.toLowerCase())) {
+            searchResults.push(data[i]);
+         }
+         if ( searchResults.length ) {
+            showPage(searchResults, 1);
+            addPagination( searchResults );
+         } else {
+            displayNoResults();
+         }
+      }
+
+   }
+
+   searchInput.addEventListener("input", doSearch );
+   searchButton.addEventListener('click', doSearch );
 }
 
 // Main program
@@ -111,4 +167,4 @@ function searchForName() {
 showPage(data, 1);
 addSearchBar();
 addPagination(data);
-
+searchForName(data);
