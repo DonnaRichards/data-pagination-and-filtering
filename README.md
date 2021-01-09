@@ -1,6 +1,11 @@
-# data-pagination-and-filtering
+# Data Pagination and Filtering
 TeamTreeHouse Full Stack Javascript TechDegree Project #2
 
+A responsive website showing information for a provided dataset of students.   Student data is broken into multiple pages (nine students per page).  Search function 
+included (which was the "extra credit" portion of the project) which displays updates results immediately on detection of update of the search text or 
+when the search button is clicked.
+
+Project requirements as stated:
 In this project, you'll use a common web development technique known as “pagination” to enhance the usability of a web page.
 
 You'll start with a file that contains information for 42 students, including name, email, and picture. You'll start by using your JavaScript skills to display the first nine students on the page. Then you will add navigation, also known as pagination buttons, that the user can click to display different pages of students.
