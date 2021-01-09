@@ -6,8 +6,8 @@ FSJS Project 2 - Data Pagination and Filtering
 const ITEMSPERPAGE = 9;
 
 /**
-`showPage` function
-This function will create and insert/append the elements needed to display a "page" of nine students
+ *`showPage` function
+ *This function will create and insert/append the elements needed to display a "page" of nine students
  * @param  {} studentList - list of student objects
  * @param  {} pageNumber - integer containing page number to display
  */
@@ -34,6 +34,24 @@ function showPage( studentList, pageNumber ) {
       ul.insertAdjacentHTML('beforeend', html);
    }
 }
+/**
+ * `addSearchBar` function
+ * Simply adds HTML code to display search bar on page.   
+ * No search handling, this is performed by other functions.
+ */
+function addSearchBar() {
+   const header = document.querySelector('header');
+   const searchHTML = `
+      <label for="search" class="student-search">
+         <input id="search" placeholder="Search by name...">
+         <button type="button">
+            <img src="img/icn-search.svg" alt="Search icon">
+         </button>
+      </label>
+   `
+   header.insertAdjacentHTML('beforeend', searchHTML);
+}
+
 
 /**
 `addPagination` function
@@ -83,11 +101,13 @@ function addPagination( studentList ) {
             showPage(studentList, pageNumber);
          }
       }
-   })
+   });
 }
 
 
 // Main program
 
 showPage(data, 1);
+addSearchBar();
 addPagination(data);
+
