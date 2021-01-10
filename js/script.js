@@ -80,22 +80,22 @@ function addPagination( studentList ) {
          <li>
             <button type="button">${i}</button>
          </li>
-         `
+         `;
    }
    ul.insertAdjacentHTML('beforeend', pageListHtml);
 
-   ul.firstElementChild.className = "active";
+   // set active class initially on the page 1 button, identified as first child 2 levels deep of the ul
+   ul.firstElementChild.firstElementChild.className = "active";
 
    ul.addEventListener('click', (event) => {
       if (event.target.tagName == 'BUTTON') {
-         // remove class name from all li elements to ensure none have active class
-         const li = document.querySelectorAll('ul > li');
-         for (let i=0; i < li.length; i++) {
-            li[i].className = "";
+         // remove class name from all button elements to ensure none have active class
+         const buttons = document.querySelectorAll('ul.link-list button');
+         for (let i=0; i < buttons.length; i++) {
+            buttons[i].className = "";
          }
-         // set active class on the parent li element of the button that was clicked
-         const parentLi = event.target.parentNode; 
-         parentLi.className = "active";
+         // set active class on the button that was clicked
+         event.target.className = "active";
          // text content of the button is page number to display,
          // convert to an integer as showPage function needs a numeric value
          const pageNumber = parseInt(event.target.textContent);
@@ -110,12 +110,8 @@ function addPagination( studentList ) {
  * "master" function for control of the search functionality
  * user can either start entering text in search input field or hit search button
  * and search results will be displayed or a message if no results found
- * 
- * The student list is not passed through to this function from the global code (unlike other functions)
- * as this function is always performing the search on the full set of student records.  So uses the global
- * variable
  */
-function searchForName() {
+function searchForName( studentList ) {
 
    const searchInput = document.getElementById("search");
    const searchButton = searchInput.nextElementSibling;
@@ -141,10 +137,10 @@ function searchForName() {
       searchResults = [];
       // loop through all student records finding those where the name (first + last) contains the search string
       // (both compared as lowercase so search is case insensitive)
-      // have deliberately not coded for an empty search string as in this case all records are returned which
-      // is as it should be.
-      for (let i = 0; i < data.length; i++) {
-         const fullName = data[i].name.first.toLowerCase() + data[i].name.last.toLowerCase();
+      // have deliberately not checked for an empty search string as if this is the case all records are returned
+      // which is what we want.
+      for (let i = 0; i < studentList.length; i++) {
+         const fullName = studentList[i].name.first.toLowerCase() + studentList[i].name.last.toLowerCase();
          if ( fullName.includes(searchText.toLowerCase())) {
             searchResults.push(data[i]);
          }
